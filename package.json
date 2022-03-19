@@ -1,0 +1,15 @@
+{
+  "name": "wordlike-helper",
+  "version": "1.0.0",
+  "description": "Helper for games like wordle. Included here are wordle and ordlig",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joakim Rönning",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.1"
+  }
+}
