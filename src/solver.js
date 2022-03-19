@@ -1,18 +1,18 @@
 //< >
 
-const getAllIncluded = (included) => included.map(l => l.join("")).join("").split("")
+const getAll = (doubleArray) => doubleArray.map(l => l.join("")).join("").split("")
 
 //avoids marking non-repeat yellow letters as excluded 
 const getActualExcluded = (allIncluded, excluded) => excluded.filter( x => !allIncluded.includes(x))
 
 const getRegexString = (ordered, excluded, included) => {
-    const actualExcluded = getActualExcluded(getAllIncluded(included), excluded);
+    const actualExcluded = getActualExcluded(getAll(included), getAll(excluded));
     let s = ""
     for (let i=0; i< ordered.length; i++) {
         if (ordered[i] !== '*'){
             s += ordered[i]
         } else {
-            const localExcluded = Array.from(new Set((actualExcluded.join("")+included[i].join("")).split(""))).join("")
+            const localExcluded = Array.from(new Set(actualExcluded.concat(...included[i]).concat(...excluded[i]))).join("")
             s += `[^${localExcluded}]`
         }
     }
@@ -23,7 +23,7 @@ const getRegexString = (ordered, excluded, included) => {
 const createLists = (guesses, wordLength) => {
     const ordered = new Array(wordLength).fill('*')
     const unordered = Array.from({length: wordLength}, () => [])
-    const excluded = []
+    const excluded = Array.from({length: wordLength}, () => [])
     guesses.forEach(guess => {
         const letters = guess[0].split("")
         const colors = guess[1].split("")
@@ -38,10 +38,10 @@ const createLists = (guesses, wordLength) => {
                     unordered[i].push(letter)
                     break;
                 case 'w':
-                    excluded.push(letter)
+                    excluded[i].push(letter)
                     break;
                 default:
-                    console.log("WHAT THE FUCK")
+                    console.log("WHAT THE HECK")
             }
         }
     })
@@ -51,7 +51,7 @@ const createLists = (guesses, wordLength) => {
 const search = (lists, words)  => {
     const regex = getRegexString(lists.ordered, lists.excluded, lists.unordered);
     return words.filter(word => word.match(regex) &&
-     getAllIncluded(lists.unordered).every(letter => word.includes(letter)))
+     getAll(lists.unordered).every(letter => word.includes(letter)))
 }
 
 const getValidWords = (guesses, words, wordLength) => {
