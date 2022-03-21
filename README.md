@@ -7,5 +7,4 @@ use the command `npm run start` and follow the instructions. The program auto de
 
 ## Things to do
 
-- add the ordlig 5-letter words list
-- Currently, recognition of letters guessed multiple times is a bit iffy. If a letter is guessed multiple times, but it's not included for all those times (for example, guessing n twice and getting one yellow n) will result in excluded letters in this manner not properly excluded from a space.
+- Add weight to words with non-repeat characters

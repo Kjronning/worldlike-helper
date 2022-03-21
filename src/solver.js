@@ -3,16 +3,18 @@
 const getAll = (doubleArray) => doubleArray.map(l => l.join("")).join("").split("")
 
 //avoids marking non-repeat yellow letters as excluded 
-const getActualExcluded = (allIncluded, excluded) => excluded.filter( x => !allIncluded.includes(x))
+const getTotallyExcluded = (included, excluded) => excluded.filter( x => !included.includes(x))
 
+//creates a regex string to match words to.
 const getRegexString = (ordered, excluded, included) => {
-    const actualExcluded = getActualExcluded(getAll(included), getAll(excluded));
+    const totallyExcluded = getTotallyExcluded(getAll(included), getAll(excluded));
     let s = ""
     for (let i=0; i< ordered.length; i++) {
         if (ordered[i] !== '*'){
             s += ordered[i]
         } else {
-            const localExcluded = Array.from(new Set(actualExcluded.concat(...included[i]).concat(...excluded[i]))).join("")
+            //This should avoid having excluded repeat letters from appearing in the specific spaces where they're not doubled 
+            const localExcluded = Array.from(new Set(totallyExcluded.concat(...included[i]).concat(...excluded[i]))).join("")
             s += `[^${localExcluded}]`
         }
     }
